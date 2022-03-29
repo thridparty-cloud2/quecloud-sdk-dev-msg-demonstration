@@ -184,7 +184,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 定位信息查询的响应、定位信息的主动上报
+     * 定位信息查询的响应、定位信息的主动上报(原始数据)
      * @param var1
      */
      @Override
@@ -194,7 +194,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 定位信息查询的响应、定位信息的主动上报
+     * 定位信息查询的响应、定位信息的主动上报(解析数据-WGS-84)
      * @param var1
      */
      @Override
