@@ -8,6 +8,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HandleMessageImpl implements HandleMessage {
 
+    @Override
+    public void beforeHandleMessage(String var1) {
+        // do something
+        log.info(var1);
+    }
+
+    @Override
+    public void afterHandleMessage(String var1) {
+        // do something
+        log.info(var1);
+    }
+
     /**
      * 上下线事件
      * @param var1
