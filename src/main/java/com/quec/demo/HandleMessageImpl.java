@@ -8,12 +8,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HandleMessageImpl implements HandleMessage {
 
+    /**
+     *处理订阅的消息前业务自定义处理
+     * @param var1
+     */
     @Override
     public void beforeHandleMessage(String var1) {
         // do something
         log.info(var1);
     }
 
+    /**
+     *处理订阅的消息后业务自定义处理
+     * @param var1
+     */
     @Override
     public void afterHandleMessage(String var1) {
         // do something
