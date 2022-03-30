@@ -4,7 +4,7 @@
 - maven 3.6.3
 # 设备下行方法介绍
 - 1.QueCloudDevDownlinkDemo.java中有设备指令下发调用过程及参数说明
-- 2.更改QueCloudDevDownlinkDemo.java 中AccessKey、AccessSecret、endpoint(AccessKey和AccessSecre是设备管理平台用户创建AccessKey和AccessSecret,endpoint是链接地址，国内生成环境值为 iot-gateway.quectel.com)
+- 2.更改QueCloudDevDownlinkDemo.java 中AccessKey、AccessSecret、endpoint(AccessKey和AccessSecre是设备管理平台用户创建AccessKey和AccessSecret,endpoint是链接地址，国内生成环境值为 iot-api.quectelcn.com)
 - 3.根据每个方法的参数说明替换方法中的参数
 - 4.执行相应的方法即可
 ## 多租户
