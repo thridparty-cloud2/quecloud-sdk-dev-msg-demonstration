@@ -17,4 +17,4 @@
 ## 多租户
 针对需要同时监听不同的队列,根据AccessKey、AccessSecret、connectionUrl、queueName创建不同AmqpClient对象即可
 # 在线交流
-![image](https://github.com/thridparty-cloud2/quecloud-sdk-dev-msg-demonstration/blob/master/IMG/CBBE3E2F06944E79CF5C87267B909136.png)
+![image](/IMG/CBBE3E2F06944E79CF5C87267B909136.png)
