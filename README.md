@@ -17,4 +17,4 @@
 ## 多租户
 针对需要同时监听不同的队列,根据AccessKey、AccessSecret、connectionUrl、queueName创建不同AmqpClient对象即可
 # 在线交流
-<img style="width:10%;" src="/IMG/CBBE3E2F06944E79CF5C87267B909136.png" />
+<img style="width:20%;" src="/IMG/CBBE3E2F06944E79CF5C87267B909136.png" />
