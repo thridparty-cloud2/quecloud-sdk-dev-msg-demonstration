@@ -112,7 +112,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，对应物模型数据包协议的Event消息类型，物模型属性上报
+     * 上行，物模型属性上报
      * @param var1
      */
      @Override
