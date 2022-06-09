@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.quectel.aiot</groupId>
             <artifactId>quecloud-sdk-dev-msg</artifactId>
-            <version>1.1.0.RELEASE</version>
+            <version>1.1.2.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
