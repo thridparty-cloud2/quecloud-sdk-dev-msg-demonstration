@@ -3,10 +3,9 @@ package com.quec.demo;
 import com.alibaba.fastjson.JSONObject;
 import com.quec.client.MsgClient;
 import com.quec.config.InitClientProfile;
-import com.quec.model.device.request.DeviceBatchSendDataRequest;
-import com.quec.model.device.request.DeviceBatchSendDataRequestBody;
-import com.quec.model.device.request.DeviceSendDataRequest;
+import com.quec.model.device.request.*;
 import com.quec.model.device.response.DeviceBatchSendDataResponse;
+import com.quec.model.device.response.DeviceDmReadDataResponse;
 import com.quec.model.device.response.DeviceSendDataResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +26,6 @@ public class QueCloudDevDownlinkDemo {
         String type="PASSTHROUGH|PROPERTY|SERVICE";
         // GET:上报 DOWN:下发
         String operate="GET|DOWN";
-
 
         // 单个设备下发透传数据
         type = "PASSTHROUGH";
@@ -113,5 +111,70 @@ public class QueCloudDevDownlinkDemo {
         DeviceBatchSendDataRequest deviceBatchSendTslDataRequest =new DeviceBatchSendDataRequest(devices,"${data}",type,operate);
         DeviceBatchSendDataResponse batchSendTslDataresult=msgClient.batchSendDeviceData(deviceBatchSendTslDataRequest);
         log.info("批量设备下发物模型数据返回结果:{}", JSONObject.toJSONString(batchSendTslDataresult));
+
+
+        //设备读取物模型属性数据
+        //设备读取物模型属性数据.data为发送下行数据的具体内容.数据格式为"["key1","key2",…]"(key为物模型标识符).
+        List<String> strings = new ArrayList<>();
+        strings.add("${deviceKey}");
+        DeviceDmReadDataRequest deviceDmReadDataRequest = new DeviceDmReadDataRequest(strings,"${productKey1}","${data}");
+        DeviceDmReadDataResponse deviceDmReadDataResponse = msgClient.deviceDmReadData(deviceDmReadDataRequest);
+        log.info("设备读取物模型属性数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse));
+
+        //设备发送下行物模型数据
+        /**data数据格式为"[{key1:value1},{key2:value2}]"(key为物模型标识符).
+        示例:
+        属性bool/int/float/double/enum/date/text
+        "[{\"key\":\"value\"}]"
+        属性array
+        "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]"（id为0）
+        属性struct
+        "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"}]}]"
+        属性array含有struct
+        "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]"（id为0）
+        服务调用bool/int/float/double/enum/date/text
+        "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
+        服务调用array
+        "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
+        服务调用struct
+        "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
+        服务调用array，且array含有struct
+        "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)*/
+        List<String> list = new ArrayList<>();
+        list.add("${deviceKey}");
+        DeviceDmReadDataRequest deviceDmReadDataRequest1 = new DeviceDmReadDataRequest(strings,"${productKey}","${data}");
+        DeviceDmReadDataResponse basicResultResponse = msgClient.deviceDmWriteData(deviceDmReadDataRequest1);
+        log.info("设备发送下行物模型数据返回结果:{}", JSONObject.toJSONString(basicResultResponse));
+
+        //设备发送下行透传数据
+        //设备发送下行透传数据,data为发送下行数据的具体内容.
+        DeviceRawSendDataRequest deviceRawSendDataRequest = new DeviceRawSendDataRequest();
+        DeviceRawSendDataRequestbody b = new DeviceRawSendDataRequestbody("${productKey}","{deviceKey}");
+        List<DeviceRawSendDataRequestbody> string = new ArrayList<>();
+        string.add(b);
+        deviceRawSendDataRequest.setData("${data}");
+        deviceRawSendDataRequest.setEncode("Text");
+        deviceRawSendDataRequest.setDevices(string);
+        DeviceDmReadDataResponse deviceDmReadDataResponse1 = msgClient.deviceRawSendData(deviceRawSendDataRequest);
+        log.info("设备发送下行透传数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse1));
+
+        //设备发送下行物模型服务数据
+        /**
+         * data数据格式为"[{key1:value1},{key2:value2}]"(key为物模型标识符).
+         * 示例:
+         * 服务调用bool/int/float/double/enum/date/text
+         * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
+         * 服务调用array
+         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
+         * 服务调用struct
+         * "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
+         * 服务调用array，且array含有struct
+         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)*/
+        List<String> str = new ArrayList<>();
+        str.add("${deviceKey}");
+        DeviceDmReadDataRequest deviceDmReadDataRequest2 = new DeviceDmReadDataRequest(str,"${productKey}","${data}");
+        DeviceDmReadDataResponse deviceDmReadDataResponse2 = msgClient.deviceDmsendServiceData(deviceDmReadDataRequest2);
+        log.info("设备发送下行物模型服务数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse2));
     }
+
 }
