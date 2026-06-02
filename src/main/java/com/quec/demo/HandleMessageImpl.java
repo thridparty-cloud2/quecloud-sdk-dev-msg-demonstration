@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HandleMessageImpl implements HandleMessage {
 
     /**
-     *处理订阅的消息前业务自定义处理
+    * Hook for custom processing before a subscribed message is handled.
      * @param var1
      */
     @Override
@@ -19,7 +19,7 @@ public class HandleMessageImpl implements HandleMessage {
     }
 
     /**
-     *处理订阅的消息后业务自定义处理
+    * Hook for custom processing after a subscribed message is handled.
      * @param var1
      */
     @Override
@@ -29,7 +29,7 @@ public class HandleMessageImpl implements HandleMessage {
     }
 
     /**
-     * 上下线事件
+     * Online/offline event.
      * @param var1
      */
     @Override
@@ -39,7 +39,7 @@ public class HandleMessageImpl implements HandleMessage {
     }
 
     /**
-     * 设备状态
+     * Device status.
      * @param var1
      */
     @Override
@@ -49,7 +49,7 @@ public class HandleMessageImpl implements HandleMessage {
     }
 
     /**
-     * 上行，透传命令上行
+    * Uplink passthrough command.
      * @param var1
      */
     @Override
@@ -59,7 +59,7 @@ public class HandleMessageImpl implements HandleMessage {
     }
 
     /**
-     * 下行，透传命令下行
+    * Downlink passthrough command.
      * @param var1
      */
      @Override
@@ -70,7 +70,7 @@ public class HandleMessageImpl implements HandleMessage {
 
 
     /**
-     *ACK确认消息，返回下行数据是否发送成功响应
+    * ACK message indicating whether the downlink payload was delivered successfully.
      * @param var1
      */
      @Override
@@ -81,7 +81,7 @@ public class HandleMessageImpl implements HandleMessage {
 
 
     /**
-     * 下行，物模型属性读命令下发
+    * Downlink property read request for the thing model.
      * @param var1
      */
      @Override
@@ -91,7 +91,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，物模型属性读命令响应
+    * Uplink response to a thing model property read request.
      * @param var1
      */
      @Override
@@ -102,7 +102,7 @@ public class HandleMessageImpl implements HandleMessage {
 
 
     /**
-     * 物模型属性写命令下发
+    * Thing model property write request.
      * @param var1
      */
     @Override
@@ -112,7 +112,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，物模型属性上报
+    * Uplink thing model property report.
      * @param var1
      */
      @Override
@@ -122,7 +122,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 下行，物模型服务执行请求，对应透传数据包协议的Write消息类型
+    * Downlink thing model service invocation request, corresponding to the Write message type in the passthrough payload protocol.
      * @param var1
      */
      @Override
@@ -132,7 +132,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，物模型服务执行响应，对应透传数据包协议的Event消息类型
+    * Uplink response to a thing model service invocation, corresponding to the Event message type in the passthrough payload protocol.
      * @param var1
      */
      @Override
@@ -142,7 +142,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，对应物模型数据包协议的Event消息类型，物模型事件信息上报
+    * Uplink informational event report, corresponding to the Event message type in the thing model payload protocol.
      * @param var1
      */
      @Override
@@ -152,7 +152,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，对应物模型数据包协议的Event消息类型，物模型事件告警上报
+    * Uplink warning event report, corresponding to the Event message type in the thing model payload protocol.
      * @param var1
      */
      @Override
@@ -162,7 +162,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 上行，对应物模型数据包协议的Event消息类型，物模型事件故障上报
+    * Uplink error event report, corresponding to the Event message type in the thing model payload protocol.
      * @param var1
      */
      @Override
@@ -172,7 +172,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 设置定位信息发送模式
+    * Configures the location reporting mode.
      * @param var1
      */
      @Override
@@ -182,7 +182,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 查询定位信息，为空，则以保存的MODE返回
+    * Queries location data. If no value is provided, the saved mode is returned.
      * @param var1
      */
      @Override
@@ -192,7 +192,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 定位信息查询的响应、定位信息的主动上报(原始数据)
+    * Response to a location query or proactive location report in raw format.
      * @param var1
      */
      @Override
@@ -202,7 +202,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 定位信息查询的响应、定位信息的主动上报(解析数据-WGS-84)
+    * Response to a location query or proactive location report in parsed WGS-84 format.
      * @param var1
      */
      @Override
@@ -212,7 +212,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 终端用户信息变更-新增
+    * End-user profile created event.
      * @param var1
      */
      @Override
@@ -222,7 +222,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 终端用户信息变更-修改
+    * End-user profile updated event.
      * @param var1
      */
      @Override
@@ -232,7 +232,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 终端用户信息变更-删除
+    * End-user profile deleted event.
      * @param var1
      */
      @Override
@@ -242,7 +242,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 终端用户设备绑定信息
+    * End-user device binding event.
      * @param var1
      */
      @Override
@@ -252,7 +252,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 产品新增/删除
+    * Product created or deleted event.
      * @param var1
      */
      @Override
@@ -262,7 +262,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 产品信息变更
+    * Product metadata updated event.
      * @param var1
      */
      @Override
@@ -272,7 +272,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 产品物模型信息变更
+    * Product thing model updated event.
      * @param var1
      */
      @Override
@@ -282,7 +282,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 设备新增/删除
+    * Device created or deleted event.
      * @param var1
      */
      @Override
@@ -292,7 +292,7 @@ public class HandleMessageImpl implements HandleMessage {
      };
 
     /**
-     * 设备信息修改
+    * Device metadata updated event.
      * @param var1
      */
      @Override

@@ -20,52 +20,54 @@ public class QueCloudDevDownlinkDemo {
                 "${accessKey}",
                 "${accessSecret}",
                 "${endpoint}");
-        // 获取MgrClient对象。建议可以使用单例模式。此对象中包含设备数据下发相关的sdk
+        // Create the MsgClient instance. Using a singleton is recommended. This client exposes the SDK APIs for device downlink messaging.
         MsgClient msgClient = new MsgClient(initClientProfile);
-        // PASSTHROUGH:透传 PROPERTY:属性 SERVICE:服务
+        // PASSTHROUGH: passthrough payload PROPERTY: property SERVICE: service
         String type="PASSTHROUGH|PROPERTY|SERVICE";
-        // GET:上报 DOWN:下发
+        // GET: read/report DOWN: push data to the device
         String operate="GET|DOWN";
 
-        // 单个设备下发透传数据
+        // Send a passthrough payload to a single device
         type = "PASSTHROUGH";
         operate = "DOWN";
         DeviceSendDataRequest deviceSendDataRequest = new DeviceSendDataRequest("${productKey}","${deviceKey}","${data}",type,operate);
-        // 透传需要设置数据格式 Hex|Text
+        // For passthrough payloads, the data format must be Hex or Text.
         deviceSendDataRequest.setPassDataFormat("Text");
         DeviceSendDataResponse result = msgClient.sendDeviceData(deviceSendDataRequest);
-        log.info("单个设备下发透传数据返回结果:{}", JSONObject.toJSONString(result));
+        log.info("Single-device passthrough downlink result: {}", JSONObject.toJSONString(result));
 
 
-        // 单设备下发物模型数据
+        // Send thing model data to a single device
         /**
-         * 设备发送下行数据.data为发送下行数据的具体内容.operate=GET,数据格式为"[“key1","key2",…]"(key为物模型标识符)。operate=DOWN,数据格式为”[{key1:value1},{key2:value2}]"(key为物模型标识符).
-         * 示例:
-         * 属性bool/int/float/double/enum/date/text
+         * The data field contains the payload to send.
+         * When operate=GET, the format is "[\"key1\",\"key2\",...]", where each key is a thing model identifier.
+         * When operate=DOWN, the format is "[{key1:value1},{key2:value2}]", where each key is a thing model identifier.
+         * Examples:
+         * Scalar properties: bool/int/float/double/enum/date/text
          * "[{\"key\":\"value\"}]"
-         * 属性array
-         * "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]"（id为0）
-         * 属性struct
+         * Array properties
+         * "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]" (id is 0)
+         * Struct properties
          * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"}]}]"
-         * 属性array含有struct
-         * "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]"（id为0）
-         * 服务调用bool/int/float/double/enum/date/text
+         * Array properties containing structs
+         * "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]" (id is 0)
+         * Service inputs: bool/int/float/double/enum/date/text
          * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
-         * 服务调用array
-         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
-         * 服务调用struct
+         * Service inputs: array
+         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]" (id is 0)
+         * Service inputs: struct
          * "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
-         * 服务调用array，且array含有struct
-         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)
+         * Service inputs: array containing structs
+         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]" (id is always 0)
          */
         type = "PROPERTY";
         operate = "DOWN";
         DeviceSendDataRequest deviceSendTslDataRequest = new DeviceSendDataRequest("${productKey}","${deviceKey}","${data}",type,operate);
         DeviceSendDataResponse tslResult = msgClient.sendDeviceData(deviceSendTslDataRequest);
-        log.info("单设备下发物模型数据返回结果:{}", JSONObject.toJSONString(tslResult));
+        log.info("Single-device thing model downlink result: {}", JSONObject.toJSONString(tslResult));
 
 
-        // 批量设备下发透传数据
+        // Send a passthrough payload to multiple devices
         List<DeviceBatchSendDataRequestBody> devices = new ArrayList<>();
         DeviceBatchSendDataRequestBody deviceBatchSendDataRequestBody1 = new DeviceBatchSendDataRequestBody("${productKey1}","${deviceKey1}");
         DeviceBatchSendDataRequestBody deviceBatchSendDataRequestBody2 = new DeviceBatchSendDataRequestBody("${productKey1}","${deviceKey1}");
@@ -74,32 +76,34 @@ public class QueCloudDevDownlinkDemo {
         type = "PASSTHROUGH";
         operate = "DOWN";
         DeviceBatchSendDataRequest deviceBatchSendDataRequest =new DeviceBatchSendDataRequest(devices,"${data}",type,operate);
-        // 透传需要设置数据格式 Hex|Text
+        // For passthrough payloads, the data format must be Hex or Text.
         deviceBatchSendDataRequest.setPassDataFormat("Text");
         DeviceBatchSendDataResponse batchSendDataresult=msgClient.batchSendDeviceData(deviceBatchSendDataRequest);
-        log.info("批量设备下发透传数据返回结果:{}", JSONObject.toJSONString(batchSendDataresult));
+        log.info("Batch passthrough downlink result: {}", JSONObject.toJSONString(batchSendDataresult));
 
 
-        // 批量设备下发物模型数据
+        // Send thing model data to multiple devices
         /**
-         * 设备发送下行数据.data为发送下行数据的具体内容.operate=GET,数据格式为"[“key1","key2",…]"(key为物模型标识符)。operate=DOWN,数据格式为”[{key1:value1},{key2:value2}]"(key为物模型标识符).
-         * 示例:
-         * 属性bool/int/float/double/enum/date/text
+         * The data field contains the payload to send.
+         * When operate=GET, the format is "[\"key1\",\"key2\",...]", where each key is a thing model identifier.
+         * When operate=DOWN, the format is "[{key1:value1},{key2:value2}]", where each key is a thing model identifier.
+         * Examples:
+         * Scalar properties: bool/int/float/double/enum/date/text
          * "[{\"key\":\"value\"}]"
-         * 属性array
-         * "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]"（id为0）
-         * 属性struct
+         * Array properties
+         * "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]" (id is 0)
+         * Struct properties
          * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"}]}]"
-         * 属性array含有struct
-         * "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]"（id为0）
-         * 服务调用bool/int/float/double/enum/date/text
+         * Array properties containing structs
+         * "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]" (id is 0)
+         * Service inputs: bool/int/float/double/enum/date/text
          * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
-         * 服务调用array
-         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
-         * 服务调用struct
+         * Service inputs: array
+         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]" (id is 0)
+         * Service inputs: struct
          * "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
-         * 服务调用array，且array含有struct
-         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)
+         * Service inputs: array containing structs
+         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]" (id is always 0)
          */
         List<DeviceBatchSendDataRequestBody> tslDevices = new ArrayList<>();
         DeviceBatchSendDataRequestBody deviceBatchSendDataRequestBody3 = new DeviceBatchSendDataRequestBody("${productKey1}","${deviceKey1}");
@@ -110,44 +114,44 @@ public class QueCloudDevDownlinkDemo {
         operate = "DOWN";
         DeviceBatchSendDataRequest deviceBatchSendTslDataRequest =new DeviceBatchSendDataRequest(devices,"${data}",type,operate);
         DeviceBatchSendDataResponse batchSendTslDataresult=msgClient.batchSendDeviceData(deviceBatchSendTslDataRequest);
-        log.info("批量设备下发物模型数据返回结果:{}", JSONObject.toJSONString(batchSendTslDataresult));
+        log.info("Batch thing model downlink result: {}", JSONObject.toJSONString(batchSendTslDataresult));
 
 
-        //设备读取物模型属性数据
-        //设备读取物模型属性数据.data为发送下行数据的具体内容.数据格式为"["key1","key2",…]"(key为物模型标识符).
+        // Read thing model properties from devices.
+        // The data field must use the format "[\"key1\",\"key2\",...]", where each key is a thing model identifier.
         List<String> strings = new ArrayList<>();
         strings.add("${deviceKey}");
         DeviceDmReadDataRequest deviceDmReadDataRequest = new DeviceDmReadDataRequest(strings,"${productKey1}","${data}");
         DeviceDmReadDataResponse deviceDmReadDataResponse = msgClient.deviceDmReadData(deviceDmReadDataRequest);
-        log.info("设备读取物模型属性数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse));
+        log.info("Thing model property read result: {}", JSONObject.toJSONString(deviceDmReadDataResponse));
 
-        //设备发送下行物模型数据
-        /**data数据格式为"[{key1:value1},{key2:value2}]"(key为物模型标识符).
-        示例:
-        属性bool/int/float/double/enum/date/text
+        // Send thing model property data to devices.
+        /** The data format is "[{key1:value1},{key2:value2}]", where each key is a thing model identifier.
+        Examples:
+        Scalar properties: bool/int/float/double/enum/date/text
         "[{\"key\":\"value\"}]"
-        属性array
-        "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]"（id为0）
-        属性struct
+        Array properties
+        "[{\"key\":[{\"id\":\"value1\"},{\"id\":\"value2\"}]}]" (id is 0)
+        Struct properties
         "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"}]}]"
-        属性array含有struct
-        "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]"（id为0）
-        服务调用bool/int/float/double/enum/date/text
+        Array properties containing structs
+        "[{\"key\":[{\"id\":[{\"key1\":\"value1\"}]},{\"id\":[{\"key2\":\"value2\"}]}]}]" (id is 0)
+        Service inputs: bool/int/float/double/enum/date/text
         "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
-        服务调用array
-        "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
-        服务调用struct
+        Service inputs: array
+        "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]" (id is 0)
+        Service inputs: struct
         "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
-        服务调用array，且array含有struct
-        "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)*/
+        Service inputs: array containing structs
+        "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]" (id is always 0) */
         List<String> list = new ArrayList<>();
         list.add("${deviceKey}");
         DeviceDmReadDataRequest deviceDmReadDataRequest1 = new DeviceDmReadDataRequest(strings,"${productKey}","${data}");
         DeviceDmReadDataResponse basicResultResponse = msgClient.deviceDmWriteData(deviceDmReadDataRequest1);
-        log.info("设备发送下行物模型数据返回结果:{}", JSONObject.toJSONString(basicResultResponse));
+        log.info("Thing model property write result: {}", JSONObject.toJSONString(basicResultResponse));
 
-        //设备发送下行透传数据
-        //设备发送下行透传数据,data为发送下行数据的具体内容.
+        // Send a passthrough payload to devices.
+        // The data field contains the exact payload to be delivered.
         DeviceRawSendDataRequest deviceRawSendDataRequest = new DeviceRawSendDataRequest();
         DeviceRawSendDataRequestbody b = new DeviceRawSendDataRequestbody("${productKey}","{deviceKey}");
         List<DeviceRawSendDataRequestbody> string = new ArrayList<>();
@@ -156,25 +160,25 @@ public class QueCloudDevDownlinkDemo {
         deviceRawSendDataRequest.setEncode("Text");
         deviceRawSendDataRequest.setDevices(string);
         DeviceDmReadDataResponse deviceDmReadDataResponse1 = msgClient.deviceRawSendData(deviceRawSendDataRequest);
-        log.info("设备发送下行透传数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse1));
+        log.info("Passthrough downlink result: {}", JSONObject.toJSONString(deviceDmReadDataResponse1));
 
-        //设备发送下行物模型服务数据
+        // Send thing model service payloads to devices.
         /**
-         * data数据格式为"[{key1:value1},{key2:value2}]"(key为物模型标识符).
-         * 示例:
-         * 服务调用bool/int/float/double/enum/date/text
+         * The data format is "[{key1:value1},{key2:value2}]", where each key is a thing model identifier.
+         * Examples:
+         * Service inputs: bool/int/float/double/enum/date/text
          * "[{\"key\":[{\"key1\":\"value1\"},{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]"
-         * 服务调用array
-         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]"（id为0）
-         * 服务调用struct
+         * Service inputs: array
+         * "[{\"key\":[{\"key1\":[{\"id\":\"value1\"},{\"id\":\"value1\"}]}]}]" (id is 0)
+         * Service inputs: struct
          * "[{\"key\":[{\"key1\":[{\"key2\":\"value2\"},{\"key3\":\"value3\"}]}]}]"
-         * 服务调用array，且array含有struct
-         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]"(id固定为0)*/
+         * Service inputs: array containing structs
+         * "[{\"key\":[{\"key1\":[{\"id\":[{\"key2\":\"value2\"}]},{\"id\":[{\"key3\":\"value3\"}]}]}]}]" (id is always 0) */
         List<String> str = new ArrayList<>();
         str.add("${deviceKey}");
         DeviceDmReadDataRequest deviceDmReadDataRequest2 = new DeviceDmReadDataRequest(str,"${productKey}","${data}");
         DeviceDmReadDataResponse deviceDmReadDataResponse2 = msgClient.deviceDmsendServiceData(deviceDmReadDataRequest2);
-        log.info("设备发送下行物模型服务数据返回结果:{}", JSONObject.toJSONString(deviceDmReadDataResponse2));
+        log.info("Thing model service downlink result: {}", JSONObject.toJSONString(deviceDmReadDataResponse2));
     }
 
 }

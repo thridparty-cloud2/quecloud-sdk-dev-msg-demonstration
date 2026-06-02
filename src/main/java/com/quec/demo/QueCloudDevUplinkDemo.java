@@ -11,7 +11,7 @@ public class QueCloudDevUplinkDemo {
         AmqpClient amqpClient = new AmqpClient("${accessKey}","${accessSecret}","${connectionUrl}","${queueName}");
         HandleMessage handleMessage = new HandleMessageImpl();
         amqpClient.start(handleMessage);
-        log.info("开始监听队列");
+        log.info("Started listening to the queue.");
     }
 
 }
